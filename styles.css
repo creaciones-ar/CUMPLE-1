@@ -1,4 +1,4 @@
-/* VERSION 1.1 - Isabella (rosado + nubes pastel) */
+/* VERSION 1.2 - Isabella (rosado + nubes pastel) */
 @font-face{font-family:'Slight';src:url('Slight.woff2') format('woff2'),url('Slight.otf') format('opentype'),url('Slight.ttf') format('truetype');font-display:swap}
 
 /* =====================================================
@@ -259,5 +259,5 @@ img.ico-gif:not([src]){display:none}
 .deco{position:absolute;height:auto;pointer-events:none;z-index:0}
 .date-section>*:not(.deco),.center-section>*:not(.deco){position:relative;z-index:1}
 .deco-date{left:-34px;top:-10px;width:130px}
-.deco-dress{right:-40px;top:-16px;width:140px;transform:scaleX(-1)}
-.deco-duo{right:-26px;top:-10px;width:170px;transform:scaleX(-1)}
+.deco-dress{right:-40px;top:-16px;width:140px}
+.deco-duo{right:-30px;top:-10px;width:300px}   /* pasa por debajo de las fotos */
