@@ -73,7 +73,7 @@ tick();
 /* ===== Fotos: busca automáticamente el archivo correcto =====
    Prueba: foto3.jpg, "foto 3.jpg", foto_3.jpg, .png, .jpeg, .webp (y mayúsculas).
    Las que tienen data-framed (marco rosado incluido en la imagen) reciben la clase "framed". */
-const V = '1';
+const V = '2';
 const NAMES = n => [`foto${n}`, `foto ${n}`, `foto_${n}`];
 const EXTS = ['jpg', 'png', 'jpeg', 'webp', 'JPG', 'PNG', 'JPEG'];
 
