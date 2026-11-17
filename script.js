@@ -4,7 +4,7 @@ const CONFIG = {
   musica: "musica.mp3",                       // archivo de la canción "Tú haces que mi mundo brille". Vacío = no aparece el reproductor
   whatsapp: "5491161238037",                  // 54 + 9 + número (+54 11 6123 8037)
   mapsUrl: "https://maps.app.goo.gl/nawsaayhWtxreLaU6?g_st=iw",   // Quinta La Pepa. Vacío = no aparece el botón
-  confirmarAntes: "",                         // Ej: "Confirmar antes del 10 de diciembre". Vacío = no aparece
+  confirmarAntes: "Confirmar antes del 1 de diciembre",                         // Ej: "Confirmar antes del 10 de diciembre". Vacío = no aparece
   mensajeWa: "Hola! Confirmo mi asistencia al primer añito de Isabella"
 };
 
