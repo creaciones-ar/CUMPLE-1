@@ -1,4 +1,4 @@
-/* VERSION 1.4 - Isabella (rosado + nubes pastel) */
+/* VERSION 1.5 - Isabella (rosado + nubes pastel) */
 @font-face{font-family:'Slight';src:url('Slight.woff2') format('woff2'),url('Slight.otf') format('opentype'),url('Slight.ttf') format('truetype');font-display:swap}
 
 /* =====================================================
@@ -215,6 +215,7 @@ img.ico-gif:not([src]){display:none}
 .sw-blanco{background:#fff;box-shadow:0 2px 6px rgba(178,69,120,.3),inset 0 0 0 1px rgba(178,69,120,.25)!important}
 .sw-claro{background:#f9c9dc}
 .sw-rosa{background:#ee8fb6}
+.swim{max-width:320px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(178,69,120,.3);font-family:var(--serif);font-weight:600;font-size:1.05rem;letter-spacing:.12em;text-transform:uppercase;line-height:1.5}
 
 /* =====================================================
    9. LUGAR
