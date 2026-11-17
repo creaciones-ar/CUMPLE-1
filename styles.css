@@ -1,4 +1,4 @@
-/* VERSION 1.3 - Isabella (rosado + nubes pastel) */
+/* VERSION 1.4 - Isabella (rosado + nubes pastel) */
 @font-face{font-family:'Slight';src:url('Slight.woff2') format('woff2'),url('Slight.otf') format('opentype'),url('Slight.ttf') format('truetype');font-display:swap}
 
 /* =====================================================
@@ -13,7 +13,7 @@
   --base:#fffaf7;
   --col:min(100vw,480px);
   --sec-y:26px;
-  --respiro:130px;
+  --respiro:180px;
 
   --titulo:'Pinyon Script',cursive;
   --serif:'Cormorant Garamond',serif;
@@ -107,9 +107,9 @@ body{font-family:'Lato',sans-serif;color:var(--rosa);text-align:center;line-heig
 .cover,.story-section,.date-section,.center-section,.place-section,.duo,.rsvp,.closing{background:none}
 
 .respiro{position:relative;height:var(--respiro);margin:0;pointer-events:none}
-.respiro::before{content:"";position:absolute;inset:0;background:var(--img-centro) center/cover no-repeat;opacity:1;
-  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 30%,#000 70%,transparent 100%);
-          mask-image:linear-gradient(to bottom,transparent 0,#000 30%,#000 70%,transparent 100%)}
+.respiro::before{content:"";position:absolute;inset:0;background:var(--img-centro) center/cover no-repeat;opacity:.85;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,rgba(0,0,0,.12) 14%,rgba(0,0,0,.4) 30%,rgba(0,0,0,.8) 44%,#000 50%,rgba(0,0,0,.8) 56%,rgba(0,0,0,.4) 70%,rgba(0,0,0,.12) 86%,transparent 100%);
+          mask-image:linear-gradient(to bottom,transparent 0,rgba(0,0,0,.12) 14%,rgba(0,0,0,.4) 30%,rgba(0,0,0,.8) 44%,#000 50%,rgba(0,0,0,.8) 56%,rgba(0,0,0,.4) 70%,rgba(0,0,0,.12) 86%,transparent 100%)}
 .respiro:nth-of-type(even)::before{background-position:center 15%;transform:scaleX(-1)}
 .respiro:nth-of-type(3n)::before{background-position:center 85%}
 
@@ -241,8 +241,8 @@ img.ico-gif:not([src]){display:none}
    ===================================================== */
 .rsvp{position:relative;isolation:isolate;display:flex;align-items:center;justify-content:center;padding:44px 18px;overflow:hidden}
 .rsvp::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:var(--img-centro) center/cover no-repeat;
-  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 20%,#000 80%,transparent 100%);
-          mask-image:linear-gradient(to bottom,transparent 0,#000 20%,#000 80%,transparent 100%)}
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,rgba(0,0,0,.35) 14%,#000 38%,#000 62%,rgba(0,0,0,.35) 86%,transparent 100%);
+          mask-image:linear-gradient(to bottom,transparent 0,rgba(0,0,0,.35) 14%,#000 38%,#000 62%,rgba(0,0,0,.35) 86%,transparent 100%)}
 .rsvp-card{width:100%;background:rgba(255,255,255,.65);border-radius:10px;padding:34px 18px;display:flex;flex-direction:column;align-items:center;gap:10px;backdrop-filter:blur(2px)}
 .rsvp-card .script.big{font-size:min(2.1rem,calc((min(100vw,480px) - 80px) / 10.6));line-height:1.15;color:var(--rosa);white-space:nowrap}
 .rsvp-card .ico-gif{margin-bottom:0}
