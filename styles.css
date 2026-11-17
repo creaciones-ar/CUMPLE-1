@@ -1,4 +1,4 @@
-/* VERSION 1.0 - Isabella (rosado + nubes pastel) */
+/* VERSION 1.1 - Isabella (rosado + nubes pastel) */
 @font-face{font-family:'Slight';src:url('Slight.woff2') format('woff2'),url('Slight.otf') format('opentype'),url('Slight.ttf') format('truetype');font-display:swap}
 
 /* =====================================================
@@ -166,7 +166,6 @@ body{font-family:'Lato',sans-serif;color:var(--rosa);text-align:center;line-heig
 .play.playing .i-play{display:none}.play.playing .i-pause{display:block}
 .mis15{margin:8px -12px 24px;display:flex;justify-content:center}
 .mis15 img{width:100%;max-width:420px;height:auto;display:block;margin:0 auto}
-.cover-name img,.mis15 img{mix-blend-mode:multiply}   /* el fondo blanco de la imagen desaparece */
 
 /* =====================================================
    6. TEXTO DE LA HISTORIA + FOTOS
@@ -178,8 +177,8 @@ body{font-family:'Lato',sans-serif;color:var(--rosa);text-align:center;line-heig
 .polaroid{display:block;width:100%;height:auto;border:6px solid var(--rosa-claro);box-shadow:0 8px 18px rgba(178,69,120,.3)}
 .p1{transform:rotate(3deg);position:relative;z-index:1}
 .p2{transform:rotate(-3deg);margin-top:-14px;position:relative;z-index:2}
-/* Fotos con marco rosado ya incluido: sin borde extra; "multiply" hace desaparecer el blanco de las esquinas */
-.polaroid.framed{border:0;background:none;box-shadow:none;transform:none;mix-blend-mode:multiply}
+/* Fotos con marco rosado ya incluido (PNG con transparencia): sin borde extra, se superponen normalmente */
+.polaroid.framed{border:0;background:none;box-shadow:none;transform:none}
 .story-photos .polaroid.framed.p1{transform:translateX(4px);position:relative;z-index:1}
 .story-photos .polaroid.framed.p2{margin-top:-34px;transform:translateX(-8px);position:relative;z-index:2}
 
@@ -221,7 +220,7 @@ img.ico-gif:not([src]){display:none}
    9. LUGAR
    ===================================================== */
 .place-section{display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:calc(var(--sec-y)*.6) 0}
-.place-photo{width:100%;height:auto;align-self:center;margin:16px 0;display:block;object-fit:contain;mix-blend-mode:multiply}
+.place-photo{width:100%;height:auto;align-self:center;margin:16px 0;display:block;object-fit:contain}
 .place-info{display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 10px}
 .place-info .script.big{font-size:calc(min(100vw,480px) * .075);line-height:1.1;white-space:nowrap;color:var(--rosa)}
 .place-info h3{font-weight:600;font-size:1.25rem}
@@ -257,7 +256,7 @@ img.ico-gif:not([src]){display:none}
 /* =====================================================
    12. DECORACIONES SUELTAS (arcoíris)
    ===================================================== */
-.deco{position:absolute;height:auto;pointer-events:none;z-index:0;mix-blend-mode:multiply}
+.deco{position:absolute;height:auto;pointer-events:none;z-index:0}
 .date-section>*:not(.deco),.center-section>*:not(.deco){position:relative;z-index:1}
 .deco-date{left:-34px;top:-10px;width:130px}
 .deco-dress{right:-40px;top:-16px;width:140px;transform:scaleX(-1)}
