@@ -1,15 +1,11 @@
 /* ===== CONFIGURACIÓN (editar solo acá) ===== */
 const CONFIG = {
-  fecha: "December 12, 2026 21:00:00",        // sábado 12 de diciembre, 21:00 (HORA PROVISORIA: confirmar con Valentina)
-  youtubeId: "Zg8L-Pfroww",                   // código del video de YouTube de la canción. Vacío = no aparece el reproductor
-  inicio: 15,                                 // segundo desde el que suena la canción (30 = salta la intro)
-  whatsapp: "5491158265942",                  // 54 + 9 + número (CONFIRMAR que sea el de Valentina)
-  mapsUrl: "https://maps.app.goo.gl/wMsCjcH23YjNU4ht8?g_st=aw",   // link de Google Maps del salón. Vacío = no aparece el botón
-  alias: "valen.zof",                         // alias o CBU (CONFIRMAR). Vacío = no aparece la sección de regalos
-  cvu: "0000003100015179991057",              // CVU o CBU. Vacío = no aparece esa fila
-  titular: "Valentina Jazmín Zof",            // nombre del titular de la cuenta
-  confirmarAntes: "Confirmar antes del 1 de diciembre",   // Vacío = no aparece
-  mensajeWa: "Hola! Confirmo mi asistencia a los XV de Valentina"
+  fecha: "December 20, 2026 14:00:00",        // domingo 20 de diciembre, 14:00
+  musica: "musica.mp3",                       // archivo de la canción "Tú haces que mi mundo brille". Vacío = no aparece el reproductor
+  whatsapp: "5491161238037",                  // 54 + 9 + número (+54 11 6123 8037)
+  mapsUrl: "https://maps.app.goo.gl/nawsaayhWtxreLaU6?g_st=iw",   // Quinta La Pepa. Vacío = no aparece el botón
+  confirmarAntes: "",                         // Ej: "Confirmar antes del 10 de diciembre". Vacío = no aparece
+  mensajeWa: "Hola! Confirmo mi asistencia al primer añito de Isabella"
 };
 
 const $ = id => document.getElementById(id);
@@ -18,55 +14,28 @@ const $ = id => document.getElementById(id);
 const show = (...ids) => ids.forEach(i => $(i).classList.remove('hidden'));
 $('wa-btn').href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(CONFIG.mensajeWa)}`;
 if (CONFIG.mapsUrl) { $('maps-btn').href = CONFIG.mapsUrl; show('maps-btn'); }
-if (CONFIG.alias || CONFIG.cvu) {
-  $('alias').textContent = CONFIG.alias;
-  $('cvu').textContent = CONFIG.cvu;
-  $('gift-title').textContent = CONFIG.titular;
-  if (!CONFIG.alias) $('row-alias').classList.add('hidden');
-  if (!CONFIG.cvu) $('row-cvu').classList.add('hidden');
-  show('gift-section', 'gift-respiro');
-}
 if (CONFIG.confirmarAntes) { $('confirm-note').textContent = CONFIG.confirmarAntes; show('confirm-note'); }
-if (!CONFIG.youtubeId) $('player').classList.add('hidden');   // sin canción no hay reproductor
+if (!CONFIG.musica) $('player').classList.add('hidden');   // sin canción no hay reproductor
 
-/* ===== Música (YouTube oculto + reproductor propio) ===== */
-let yt, ticker, ready = false, wantPlay = false;
+/* ===== Música (archivo mp3 + reproductor propio) ===== */
+const audio = new Audio(CONFIG.musica || '');
+audio.loop = true;                               // repetir activado desde el inicio
+audio.preload = 'auto';
+let wantPlay = false, userPaused = false, needResume = false;   // userPaused: pausó a propósito
 const playBtn = $('btn-play'), bar = $('progress');
 
-if (CONFIG.youtubeId) {
-  const tag = document.createElement('script');
-  tag.src = 'https://www.youtube.com/iframe_api';
-  document.head.appendChild(tag);
-}
+audio.addEventListener('play', () => playBtn.classList.add('playing'));
+audio.addEventListener('pause', () => playBtn.classList.remove('playing'));
+audio.addEventListener('timeupdate', () => { if (audio.duration) bar.value = audio.currentTime / audio.duration * 100; });
 
-window.onYouTubeIframeAPIReady = () => {
-  yt = new YT.Player('yt-player', {
-    height: '1', width: '1', videoId: CONFIG.youtubeId,
-    playerVars: { playsinline: 1, controls: 0, start: CONFIG.inicio },
-    events: {
-      onReady: () => { ready = true; if (wantPlay) yt.playVideo(); },
-      onStateChange: e => {
-        if (e.data === YT.PlayerState.ENDED && $('btn-repeat').classList.contains('on')) { yt.seekTo(CONFIG.inicio, true); yt.playVideo(); return; }   // al terminar, vuelve a empezar sin la intro
-        const playing = e.data === YT.PlayerState.PLAYING;
-        playBtn.classList.toggle('playing', playing);
-        clearInterval(ticker);
-        if (playing) ticker = setInterval(() => {
-          bar.value = Math.max(0, (yt.getCurrentTime() - CONFIG.inicio) / span() * 100) || 0;
-        }, 500);
-      }
-    }
-  });
+playBtn.onclick = () => {
+  if (audio.paused) { userPaused = false; audio.play().catch(() => {}); }
+  else { userPaused = true; audio.pause(); }
 };
-const isPlaying = () => ready && yt.getPlayerState() === 1;
-/* La barra muestra solo la parte que suena: empieza vacía en el segundo 'inicio' y se llena hasta el final de la canción */
-const span = () => Math.max(1, yt.getDuration() - CONFIG.inicio);
-let userPaused = false, needResume = false;     // userPaused: pausó a propósito
-playBtn.onclick = () => { if (!ready) return; if (isPlaying()) { userPaused = true; yt.pauseVideo(); } else { userPaused = false; yt.playVideo(); } };
-bar.oninput = () => ready && yt.seekTo(CONFIG.inicio + span() * bar.value / 100, true);
-$('btn-prev').onclick = $('btn-next').onclick = () => { if (!ready) return; userPaused = false; yt.seekTo(CONFIG.inicio, true); yt.playVideo(); };
-$('btn-repeat').onclick = e => e.currentTarget.classList.toggle('on');
+bar.oninput = () => { if (audio.duration) audio.currentTime = audio.duration * bar.value / 100; };
+$('btn-prev').onclick = $('btn-next').onclick = () => { userPaused = false; audio.currentTime = 0; audio.play().catch(() => {}); };
+$('btn-repeat').onclick = e => { e.currentTarget.classList.toggle('on'); audio.loop = e.currentTarget.classList.contains('on'); };
 $('btn-shuffle').onclick = e => e.currentTarget.classList.toggle('on');
-$('yt-player').style.cssText = 'position:fixed;left:-9999px;width:1px;height:1px';
 
 /* ===== Abrir sobre: tocar el sello -> se rompe, se abre la solapa, sube la carta, entra la invitación ===== */
 $('open-btn').addEventListener('click', function () {
@@ -74,7 +43,8 @@ $('open-btn').addEventListener('click', function () {
   if (env.classList.contains('open')) return;      // evita doble toque
   env.classList.add('open');
   screen.classList.add('opening');
-  wantPlay = true; if (ready) yt.playVideo();      // la música arranca con el toque
+  wantPlay = true;
+  if (CONFIG.musica) audio.play().catch(() => { needResume = true; });   // la música arranca con el toque
   setTimeout(() => {
     screen.style.opacity = '0';
     setTimeout(() => {
@@ -100,37 +70,12 @@ const tick = () => {
 const timer = setInterval(tick, 1000);
 tick();
 
-/* ===== Ventana de regalo + copiar alias / CVU ===== */
-const modal = $('gift-modal');
-const openGift = () => { modal.classList.remove('hidden'); document.body.style.overflow = 'hidden'; };
-const closeGift = () => { modal.classList.add('hidden'); document.body.style.overflow = ''; };
-$('open-gift').onclick = openGift;
-$('close-gift').onclick = closeGift;
-modal.addEventListener('click', e => { if (e.target === modal) closeGift(); });   // tocar afuera cierra
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeGift(); });
-
-document.querySelectorAll('.copy-btn').forEach(btn => {
-  btn.onclick = async () => {
-    const txt = $(btn.dataset.copy).textContent.trim();
-    try {
-      await navigator.clipboard.writeText(txt);
-    } catch {
-      const t = document.createElement('textarea');
-      t.value = txt; document.body.appendChild(t); t.select();
-      try { document.execCommand('copy'); } catch { }
-      t.remove();
-    }
-    btn.textContent = '¡Copiado!';
-    setTimeout(() => btn.textContent = btn.dataset.label, 2000);
-  };
-});
-
 /* ===== Fotos: busca automáticamente el archivo correcto =====
-   Prueba: foto3.png, "foto 3.png", foto_3.png, .jpg, .jpeg, .webp (y mayúsculas).
-   Las que tienen data-framed (marco de Canva) reciben la clase "framed". */
-const V = '15';
+   Prueba: foto3.jpg, "foto 3.jpg", foto_3.jpg, .png, .jpeg, .webp (y mayúsculas).
+   Las que tienen data-framed (marco rosado incluido en la imagen) reciben la clase "framed". */
+const V = '1';
 const NAMES = n => [`foto${n}`, `foto ${n}`, `foto_${n}`];
-const EXTS = ['png', 'jpg', 'jpeg', 'webp', 'PNG', 'JPG', 'JPEG'];
+const EXTS = ['jpg', 'png', 'jpeg', 'webp', 'JPG', 'PNG', 'JPEG'];
 
 function candidates(n) {
   const list = [];
@@ -155,7 +100,6 @@ function loadPhoto(img) {
 
 document.querySelectorAll('img[data-foto]').forEach(loadPhoto);
 
-
 /* ===== Texto de la historia: mismo alto que las dos fotos =====
    Ajusta el tamaño de letra hasta que el texto empiece a la altura de la 1ª foto
    y termine a la altura de la 2ª (en cualquier celular). */
@@ -163,8 +107,8 @@ function fitStory() {
   const t = document.querySelector('.story-text');
   const box = document.querySelector('.story-photos');
   if (!t || !box || !box.offsetHeight) return;      // todavía oculto o sin cargar
- const target = box.offsetHeight * 0.96;
-let lo = 11, hi = 28;
+  const target = box.offsetHeight * 0.96;
+  let lo = 11, hi = 28;
   for (let i = 0; i < 12; i++) {
     const mid = (lo + hi) / 2;
     t.style.fontSize = mid + 'px';
@@ -176,18 +120,17 @@ document.querySelectorAll('.story-photos img').forEach(i => i.addEventListener('
 window.addEventListener('resize', fitStory);
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitStory);
 
-
 /* ===== Al volver de Google Maps u otra app, la música sigue sola ===== */
 function resumeMusic() {
-  if (!ready || !wantPlay || userPaused || isPlaying()) return;
-  yt.playVideo(); needResume = true;              // si el celular lo bloquea, se reanuda con el próximo toque
+  if (!CONFIG.musica || !wantPlay || userPaused || !audio.paused) return;
+  audio.play().catch(() => { needResume = true; });   // si el celular lo bloquea, se reanuda con el próximo toque
 }
 document.addEventListener('visibilitychange', () => { if (!document.hidden) setTimeout(resumeMusic, 300); });
 window.addEventListener('pageshow', () => setTimeout(resumeMusic, 300));
 document.addEventListener('touchend', e => {
   if (!needResume || e.target.closest('.controls')) return;
   needResume = false;
-  if (!userPaused && !isPlaying()) yt.playVideo();
+  if (!userPaused && audio.paused) audio.play().catch(() => {});
 }, { passive: true });
 
 /* ===== El ícono del calendario se anima una sola vez: se reinicia al llegar a verlo ===== */
